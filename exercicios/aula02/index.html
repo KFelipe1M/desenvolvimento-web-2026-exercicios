@@ -1,3 +1,4 @@
+<!--Fiz algumas mudanças devido a interface-->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,29 +12,9 @@
     <h1>📡 Requisições HTTP - JSONPlaceholder API</h1>
   </header>
 
-  <main>
-    <section id="usuarios-section">
-      <h2>Lista de Usuários</h2>
-      <button id="btn-carregar">🔄 Carregar Usuários</button>
-      <div id="loading" class="hidden">Carregando...</div>
-      <div id="usuarios-container"></div>
-    </section>
-
-    <section id="post-section">
-      <h2>Criar Novo Post</h2>
-      <form id="form-post">
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" required>
-        
-        <label for="conteudo">Conteúdo:</label>
-        <textarea id="conteudo" required></textarea>
-        
-        <button type="submit">📤 Enviar Post</button>
-      </form>
-      <div id="post-resultado"></div>
-    </section>
-
+          <main>  
     <section id="info-section">
+      <div id="post-resultado"></div>
       <h2>Informações da Última Requisição</h2>
       <div id="requisicao-info">
         <p><strong>Método:</strong> <span id="info-metodo">-</span></p>
@@ -43,6 +24,31 @@
       </div>
     </section>
   </main>
+
+      <h2 style="color: rgb(247, 247, 247);">Criar Novo Post</h2>
+      <form id="form-post">
+        <label for="titulo" style="color:rgb(247, 247, 247)">Título:</label>
+        <input type="text" id="titulo" required>
+        
+        <label for="conteudo" style="color:rgb(255, 255, 255)">Conteúdo:</label>
+        <textarea id="conteudo" required id="conteudo" maxlength="500"></textarea>
+        
+        <button type="submit">📤 Enviar Post</button>
+        <div id="loading" class="hidden">Carregando...</div>  
+      </form>
+
+  <main>
+        <div id="posts-container"></div>
+  </main>      
+
+  <mainuser> <!-- mudança da parte de usuários para o lado -->
+      <div id="usuarios-container"></div>
+  </mainuser> 
+  
+  <mainbt>
+      <button id="btn-carregar">🔄 Carregar Usuários</button>
+      <div id="loading" class="hidden">Carregando...</div>  
+  </mainbt>
 
   <footer>
     <p>Aula 02 - Desenvolvimento Web 2026.1</p>

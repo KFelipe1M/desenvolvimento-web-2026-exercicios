@@ -10,9 +10,6 @@ async function carregarUsuarios() {
   
   try {
     // TODO: Implementar fetch GET
-    // 1. Mostrar loading
-    loading.classList.remove('hidden');
-    container.innerHTML = '';
     
     // 2. Fazer requisição
     const response = await fetch(`${API_URL}/users`,{
@@ -27,14 +24,25 @@ async function carregarUsuarios() {
     
     // 4. Processar resposta
     const usuarios = await response.json();
-    
-    // 5. Exibir usuários
-    usuarios.forEach(user => {
-     const card = document.createElement('div');
-     card.className = 'user-card';
-     card.innerHTML = `...`;
-     container.appendChild(card);
-    });
+
+
+    // cache de requisições //
+    const cacheUsuarios = {};
+     async function buscarUsuario(){
+      if (cacheUsuarios.data){
+        console.log("utilizando cache");
+        return cacheUsuarios.data;
+      }
+      try{
+        const response = await(`${API-URL}/users`);
+        const data = await response.json();
+        cacheUsuarios.data = data;
+        return data;
+      } catch(err){
+        console.error(err)
+      }
+
+     }
     
     // 6. Esconder loading
     loading.classList.add('hidden');
@@ -45,8 +53,36 @@ async function carregarUsuarios() {
     
   } catch (error) {
     loading.classList.add('hidden');
-    container.innerHTML = `<p class="error">❌ Erro: ${error.message}</p>`;
+    container.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
   }
+
+  const btnCarregar = document.getElementById('btn-carregar');
+  async function carregarUsuarios(){
+  
+  btnCarregar.textContent = 'carregando...';
+  loading.classList.remove('hidden');
+  container.innerHTML = '';
+  try{
+  const response = await fetch(`${API_URL}/users`);
+  const usuarios = await response.json();
+  usuarios.forEach(user => {
+  const card = document.createElement('div');
+    card.className = 'user-card';
+     card.innerHTML=
+     `<h3>Nome:${user.name}</h3>
+     <p>Email: ${user.email} <p/>
+     <p>cidade: ${user.city} </p>
+     `
+     container.appendChild(card);
+    });
+
+    }  catch(err){
+    }finally{
+     btnCarregar.textContent = '🔄 Carregar Usuario';
+     }
+    }
+    btnCarregar.addEventListener('click', carregarUsuarios);
+
 }
 
 // Criar post
@@ -57,6 +93,11 @@ async function criarPost(event) {
   const titulo = document.getElementById('titulo').value;
   const conteudo = document.getElementById('conteudo').value;
   const resultado = document.getElementById('post-resultado');
+
+    if (conteudo.length == 500) {
+     alert("texto muito longo");
+     return;
+  }
   
   try {
     // TODO: Implementar fetch POST
@@ -81,6 +122,17 @@ async function criarPost(event) {
        ID: ${data.id}<br>
         Status: ${response.status}
     </div>`;
+
+    // Card de posts
+    const postContainer = document.getElementById('posts-container');
+    const novopost = document.createElement('div');
+    novopost.className = "post-card";
+
+    novopost.innerHTML = `
+    <h3> ${data.title} </h3>
+    <p> ${data.body} </p>
+    `;
+    postContainer.prepend(novopost);
     
     // 4. Limpar formulário
     event.target.reset();
@@ -92,7 +144,9 @@ async function criarPost(event) {
   } catch (error) {
     resultado.innerHTML = `<p class="error">❌ Erro: ${error.message}</p>`;
   }
+
 }
+
 
 // Atualizar informações da requisição
 function atualizarInfo(metodo, url, status, tempo) {
